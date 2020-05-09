@@ -805,7 +805,7 @@ app.post("/register", function(req, res){
 				req.session.oldUrl = null;
 				res.redirect(rediectUrl);
 			}else{
-				req.flash("success", "Welcome to BookFrenzy "+ user.firstname);
+				req.flash("success", "Welcome to bookwizard "+ user.firstname);
 				res.redirect("/");
 			}
 		});
