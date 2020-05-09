@@ -925,7 +925,12 @@ function checkCommentOwner(req, res, next){
 	}
 }
 
+let port = process.env.PORT;
+if(port == null || port == ""){
+	port = 4000;
+}
+
 // SERVER START
-app.listen(4000, function(){
+app.listen(port, function(){
 	console.log("Server has been Started");
 });
