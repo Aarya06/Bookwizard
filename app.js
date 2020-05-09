@@ -34,7 +34,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 // mongoose.connect("mongodb://localhost/bookwizard");
-mongoose.connect("mongodb+srv://bookwizard:bookwizard2020@cluster0-e2y5j.mongodb.net/bookwizard");
+mongoose.connect(process.env.mongodb);
 
 // ============================= PASSPORT REQUIREMENTS =================================
 
