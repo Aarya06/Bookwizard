@@ -1,0 +1,76 @@
+
+<header>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-white border-bottom p-2 shadow-sm">
+		<a class="navbar-brand p-0" href="/">
+			<img src = "/images/logo.png" height = "44px" >
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" 
+				aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item ">
+					<a class="nav-link text-dark" href="/">Home</a>
+				</li>
+				<li class="nav-item mx-4">
+					<a class="nav-link text-dark" href="/books">Books</a>
+				</li>
+				<li class="nav-item mx-4">
+					<a class="nav-link text-dark" href="/ebooks">E-Books</a>
+				</li>
+				<li class="nav-item mx-4">
+					<a class="nav-link text-dark" href="/blogs">Blog</a>
+				</li>
+				<li class="nav-item mx-4">
+					<a class="nav-link text-dark" href="/events">Events</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<% if(!currentUser){ %>
+				<li class="nav-item mx-3">
+					<a class="nav-link text-dark" href="/login">
+						<i class="fas fa-sign-in-alt"></i> Login</a>
+				</li>
+				<% }else{ %>
+				<li class="nav-item mx-3 dropdown">
+					<a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="/">
+						<i class="fas fa-user"></i> <%=currentUser.firstname%>
+					</a>
+					<div class="dropdown-menu">
+						<% if(currentUser.username === "bookwizard.net@gmail.com"){ %>
+						<a class="nav-link text-dark dropdown-item" href="/admin">
+							<i class="fas fa-user-shield"></i> Admin Area</a>
+						<%	} %>
+						<a class="nav-link text-dark dropdown-item" href="/myOrders">
+							<i class="fas fa-history"></i> My Orders</a>
+						<a class="nav-link text-dark dropdown-item" href="/logout">
+							<i class="fas fa-sign-out-alt"></i> Log Out</a>
+					</div>
+				</li>
+				<%	} %>
+				
+				<li class="nav-item mx-3">
+					<a class="nav-link text-dark" href="/cart">
+						<i class="fas fa-shopping-cart"></i> Cart (
+						<% if(session.cart){ %>
+						<%=session.cart.totalItems%>
+						<% }else{ %>
+						0
+						<% } %>
+						)
+					</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</header>
+
+	<div id = "msg" class = "container mt-3">
+		<% if(error && error.length > 0){ %>
+		<div class="alert alert-danger text-center mb-1" role="alert"><%= error %></div>
+		<% } %>
+		<% if(success && success.length > 0){ %>
+		<div class="alert alert-success text-center mb-1" role="alert"><%= success %></div>
+		<% } %>
+	</div>

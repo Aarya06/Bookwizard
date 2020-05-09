@@ -1,0 +1,128 @@
+
+<%- include("partials/top") %>
+<body id="checkout">
+	
+	<%- include("partials/header") %>
+	
+	<div class="container" id="check_container">
+		<div class="row px-5 pt-4 pb-5 bg-white rounded shadow-sm mt-4">
+			<div class="col-md-4 order-md-2 mb-4">
+				<h4 class="align-items-center mb-3">
+					<span class="text-muted">Your cart</span>
+				</h4>
+				<ul class="list-group mb-3">
+					<li class="list-group-item d-flex justify-content-between">
+						<div>
+							<h6 class="my-0">Books</h6>
+							<small class="text-muted">
+								Quantity: <%=session.cart.totalItems%>
+							</small>
+						</div>
+						<span class="text-muted">₹<%=totalPrice%>.00</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between">
+						<div>
+							<h6 class="my-0">Shipping Charges</h6>
+						</div>
+						<span class="text-muted">₹00.00</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between">
+						<div>
+							<h6 class="my-0">Delivery Charges</h6>
+						</div>
+						<span class="text-muted">₹0.00</span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between">
+						<span>Total</span>
+						<strong>₹<%=totalPrice%>.00</strong>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="col-md-8 order-md-1">
+				<h1 class="mt-0">Checkout</h1>
+				<hr>
+				<h4 class="mb-3">Billing address</h4>
+				<form action="/checkout" method="POST" id="checkout-form">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label for="firstName">First name</label>
+							<input type="text" class="form-control" name="firstName" placeholder="First Name" required>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label for="lastName">Last name</label>
+							<input type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+						</div>
+					</div>
+					<div class="mb-3">
+						<label for="address">Address</label>
+						<input type="text" class="form-control" name="address" placeholder="Address" required>
+					</div>
+					<div class="row">
+						<div class="col-md-5 mb-3">
+							<label for="country">Country</label>
+							<select class="custom-select d-block w-100" id="country" required>
+								<option value="">Choose</option>
+								<option>India</option>
+							</select>
+						</div>
+						<div class="col-md-4 mb-3">
+							<label for="state">State</label>
+							<select class="custom-select d-block w-100" id="state" required>
+								<option value="">Choose</option>
+								<option>Delhi</option>
+								<option>Uttar Pradesh</option>
+							</select>
+						</div>
+						<div class="col-md-3 mb-3">
+							<label for="zip">Zip</label>
+							<input type="text" class="form-control" size="6" id="zip" placeholder="" required>
+						</div>
+					</div>
+					
+					<hr class="mb-4">
+					
+					<h4 class="mb-3">Payment</h4>
+					<div class="alert alert-danger d-none" role="alert" id = "payment-error"></div>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label for="cc-name">Name on card</label>
+							<input type="text" class="form-control" id="cc-name" placeholder="Name" required>
+							<small class="text-muted">Full name as displayed on card</small>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label for="cc-number">Credit card number</label>
+							<input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" 
+								   data-mask = "0000 0000 0000 0000" required>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 mb-3">
+							<label for="cc-expiration">MM</label>
+							<input type="text" class="form-control" id="cc-expiration-mm" placeholder="00" 
+								   data-mask = "00" required>
+						</div>
+						<div class="col-md-2 mb-3">
+							<label for="cc-expiration">YY</label>
+							<input type="text" class="form-control"  id="cc-expiration-yy" placeholder="00" 
+								   data-mask = "00" required>
+						</div>
+						<div class="col-md-3 mb-3 ml-3">
+							<label for="cc-cvv">CVV</label>
+							<input type="text" class="form-control"  id="cc-cvv" placeholder="000" 
+								   data-mask = "000" required>
+						</div>
+					</div>
+					
+					<hr class="mb-4">
+					
+					<button class="btn btn-primary btn-lg btn-block" type="submit">Proceed to Payment</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://js.stripe.com/v2/"></script>
+	<script src="/javascript/checkout.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+	<%- include("partials/footer") %>

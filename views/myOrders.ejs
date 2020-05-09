@@ -1,0 +1,81 @@
+
+<%- include("partials/top") %>
+<body>
+	<%- include("partials/header") %>
+	
+	<%if(orders && orders.length > 0){ %>
+	<div class="container" id="order">
+	
+		<div>
+			<h1>Your Orders</h1>
+			<hr>
+		</div>
+		
+		<% orders.forEach(function(order){ %>
+        
+        <div class="col-lg-12 p-2 bg-white rounded shadow my-1">
+			<div class="table-responsive">
+				<table class="table m-0">
+					<thead>
+						<tr>
+							<th scope="col" class="border-0 bg-light">
+								<div class=" px-3 text-uppercase">Total:</div>
+							</th>
+							<th scope="col" class="border-0 bg-light">
+								<div class=" text-uppercase"></div>
+							</th>
+							<th scope="col" class="border-0 bg-light">
+								<div class=" text-uppercase"></div>
+							</th>
+							<th scope="col-sm-6" class="border-0 bg-light">
+								<div class=" text-uppercase">₹<%=order.cart.totalPrice%>.00</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% (order.items).forEach(function(book){ %>
+						<tr>
+							<th scope="row" class="border-0 p-0">
+								<div class="p-2">
+									<img src="<%=book.item.image%>" width="70" class="img-fluid                                                   shadow-sm">
+									<div class="ml-3 d-inline-block align-middle">
+										<h5 class="mb-0">
+											<a href="/books/<%=book.item._id%>" class="text-dark d-                                                     inline-block align-middle">
+												<%=book.item.title%>
+											</a>
+										</h5>
+										<span class="text-muted font-weight-normal font-italic d-                                                        block">
+											Category: <%=book.item.category%>
+										</span>
+									</div>
+								</div>
+							</th>
+							<td class="border-0 align-middle">
+								<strong><%=book.quantity%></strong>
+							</td>
+							<td class="border-0 align-middle">
+								<strong>₹<%=book.price%>.00</strong>
+							</td>
+							<td class="border-0 align-middle">
+								<a href="/books/<%=book.item._id%>" class="text-dark">Buy again</a>
+							</td>
+						</tr>
+						<% }) %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<% }) %>
+	</div>
+	<% }else{ %>
+	<div class = "container p-5 my-5 rounded shadow" id="order">
+		<center>
+			<h1 class="display-4">Oops!</h1>
+			<img src = "/images/empty-order.png" height = "250px">
+			<p class="lead">Begin your journey.</p>
+			<a href="/books" class="btn btn-primary rounded-pill px-5">Shop Now</a>
+		</center>
+	</div>
+	<% } %>
+	
+	<%- include("partials/footer") %>

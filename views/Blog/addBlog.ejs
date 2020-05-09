@@ -1,0 +1,34 @@
+
+<%- include("../partials/top") %>
+<body>
+	
+	<%- include("../partials/header") %>
+	
+	<div class="container my-5 col-lg-6">
+		<form action = "/blogs" method = "POST">
+			<div class = "row">
+				<div class="form-group col-lg-6">
+					<label for="formGroupExampleInput">Title</label>
+					<input type="text" class="form-control" name="blog[title]" placeholder="Title" required>
+				</div>
+				<div class="form-group col-lg-6">
+					<label for="formGroupExampleInput2">Category</label>
+					<input type="text" class="form-control" name="blog[category]" placeholder="Category" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="formGroupExampleInput2">Image url</label>
+				<input type="text" class="form-control" name="blog[image]" placeholder="Image url" required>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlTextarea1">Description</label>
+				<textarea class="form-control" name="blog[body]" rows="4"></textarea>
+				<script>
+    				CKEDITOR.replace( 'blog[body]' );
+				</script>
+  			</div>
+			<button type="submit" class="btn btn-primary btn-block">Submit</button>
+		</form>
+	</div>
+	
+	<%- include("../partials/footer") %>

@@ -1,0 +1,48 @@
+
+<%- include("../partials/top") %>
+<body>
+	<%- include("../partials/header") %>
+
+	<div class="container">
+		
+		<div class="nav-scroller">
+			<nav class="nav d-flex justify-content-between">
+				<a class="p-2 text-muted" name="all" href="/books">All Genres</a>
+				<a class="p-2 text-muted" name="Biography"
+				   href="/books/category/Biography">Biography</a>
+				<a class="p-2 text-muted" name="Comics" href="/books/category/Comics">Comics</a>
+				<a class="p-2 text-muted" name="Fiction" href="/books/category/Fiction">Fiction</a>
+				<a class="p-2 text-muted" name="Horror" href="/books/category/Horror">Horror</a>
+				<a class="p-2 text-muted" name="Mystery" href="/books/category/Mystery">Mystery</a>
+				<a class="p-2 text-muted" name="Romance" href="/books/category/Romance">Romance</a>
+				<a class="p-2 text-muted" name="Thriller"
+				   href="/books/category/Thriller">Thriller</a>
+   			</nav>
+  		</div>
+		
+		<div class="jumbotron p-4 p-md-5 text-white rounded bg-dark" 
+			 style="background-image:url(/images/book.jpg); background-size: cover;
+					background-repeat: no-repeat ">
+			<div class="col-md-6 px-0">
+				<h1 class="display-4 font-italic">Our Inventory Changes Constantly</h1>
+				<p class="lead my-3">
+					we offer an appealing selection of quality books. Our selection is vast and our prices are unbeatable. Our quality inventory is changing constantly.
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<% books.forEach(function(books){ %>
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4" >
+				<img src=" <%= books.image %> " width="140"  background="#777" color="#777"  >
+				<a href="/books/<%=books._id%>" class="text-dark">
+					<h6 class="mb-0"><%= books.title %></h6>
+				</a>
+				<p class="text-muted my-0"><%= books.author %></p>
+				<strong>₹ <%= books.price %></strong>
+			</div>
+			<% }) %>
+		</div>
+	</div>
+
+      
+	<%- include("../partials/footer") %>

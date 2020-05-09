@@ -1,0 +1,35 @@
+
+<%- include("../partials/top") %>
+
+<body id="show_blog">
+	
+	<%- include("../partials/header") %>
+	
+	<div class="container mt-5">
+		<div class="row py-5">
+			<div class="col mx-auto">
+				<div class="card">
+					<div class="card-body p-5">
+						<h4 class="mb-4"><%= blog.title %>
+							<% if(currentUser && ((currentUser.username === "bookwizard.net@gmail.com")||(blog.postedBy.id.equals(currentUser._id)))){ %>
+							<span class ="float-right">
+								<a href = "/blogs/<%=blog._id%>/edit"><i class="fas fa-pen btn btn-warning"></i></a>
+								<form action = "/blogs/<%=blog._id%>?_method=DELETE" method = "POST" id ="delete-form">
+									<button class = "btn btn-danger btn-sm">
+										<i class="fas fa-trash "></i>
+									</button>
+								</form>
+							</span>
+							<% } %>
+						</h4>
+						<div class="custom-scrollbar-css p-2">
+							<img src="<%=blog.image%>" height="300px" align="right" class="p-2">
+							<p class="font-italic"><%-blog.body%></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<%- include("../partials/footer") %>

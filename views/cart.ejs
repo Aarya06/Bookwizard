@@ -1,0 +1,115 @@
+
+<%- include("partials/top") %>
+<body id="cart">
+	<%- include("partials/header") %>
+	
+	<% if((books != null)&&(books.length > 0)){ %>
+	<div class="pb-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 px-5 py-3 bg-white rounded shadow-sm mb-3 mt-1">
+					<div>
+						<h1>Your Cart</h1>
+						<hr>
+					</div>
+					
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col" class="border-0 bg-light">
+										<div class="p-2 px-3 text-uppercase">Product</div>
+									</th>
+									<th scope="col" class="border-0 bg-light">
+										<div class="py-2 text-uppercase">Price</div>
+									</th>
+									<th scope="col" class="border-0 bg-light">
+										<div class="py-2 text-uppercase">Quantity</div>
+									</th>
+									<th scope="col" class="border-0 bg-light">
+										<div class="py-2 text-uppercase">Remove</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% books.forEach(function(book){ %>
+								<tr>
+									<th scope="row" class="border-0">
+										<div class="p-2">
+											<img src="<%=book.item.image%>" alt="" width="70" 
+												 class="img-fluid shadow-sm">
+											<div class="ml-3 d-inline-block align-middle">
+												<h5 class="mb-0">
+													<a href="/book/<%=book._id%>" class="text-dark d-inline-block align-middle">
+														<%=book.item.title%>
+													</a>
+												</h5>
+												<span class="text-muted font-weight-normal font-italic d-block">
+													Category: <%=book.item.category%>
+												</span>
+											</div>
+										</div>
+									</th>
+									<td class="border-0 align-middle"><strong>₹<%=book.price%>.00</strong></td>
+									<td class="border-0 align-middle"><strong><%=book.quantity%></strong></td>
+									<td class="border-0 align-middle">
+										<a href="/cart/remove/<%=book.item._id%>" class="text-dark">
+											<i class="fa fa-trash"></i>
+										</a>
+									</td>
+								</tr>
+								<% }) %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row py-5 p-4 bg-white rounded shadow-sm">
+				<div class="col-lg-6">
+					<div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">
+						Want to add more Products ?
+					</div>
+					<p class="font-italic m-3">Head back to the books collections and add more to your cart</p>
+					<div class="p-4">
+						<a href="/books" class="btn btn-primary rounded-pill py-2ss btn-block">Continue Shopping</a>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+					<div class="p-4">
+						<ul class="list-unstyled mb-4">
+							<li class="d-flex justify-content-between py-3 border-bottom">
+								<strong class="text-muted">Order Subtotal </strong>
+								<strong>₹<%=totalPrice%>.00</strong>
+							</li>
+							<li class="d-flex justify-content-between py-3 border-bottom">
+								<strong class="text-muted">Shipping and handling</strong>
+								<strong>₹00.00</strong>
+							</li>
+							<li class="d-flex justify-content-between py-3 border-bottom">
+								<strong class="text-muted">Total</strong>
+								<h5 class="font-weight-bold">₹<%=totalPrice%>.00</h5>
+							</li>
+						</ul>
+						<a href="/checkout" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<% }else{ %>
+	
+	<div class = "container bg-white p-5 rounded shadow-sm">
+		<center>
+			<h1 class="display-4 mb-0">Your cart is empty!</h1>
+			<img src = "/images/emptycart.png" height = "250px">
+			<p class="lead">Add items to it now.</p>
+			<a href="/books" class="btn btn-primary rounded-pill px-5">Shop Now</a>
+		</center>
+	</div>
+	
+	<% } %>
+	
+	<%- include("partials/footer") %>
+

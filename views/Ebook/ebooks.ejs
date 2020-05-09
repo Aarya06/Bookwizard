@@ -1,0 +1,41 @@
+<%- include("../partials/top") %>
+<body>
+	<%- include("../partials/header") %>
+	<div class="container">
+		
+		<div class="nav-scroller">
+			<nav class="nav d-flex justify-content-between">
+				<a class="p-2 text-muted" name="all" href="/ebooks">All Genres</a>
+				<a class="p-2 text-muted" name="Biography" href="/ebooks/category/Biography">Biography</a>
+				<a class="p-2 text-muted" name="Comics" href="/ebooks/category/Comics">Comics</a>
+				<a class="p-2 text-muted" name="Fiction" href="/ebooks/category/Fiction">Fiction</a>
+				<a class="p-2 text-muted" name="Horror" href="/ebooks/category/Horror">Horror</a>
+				<a class="p-2 text-muted" name="Mystery" href="/ebooks/category/Mystery">Mystery</a>
+				<a class="p-2 text-muted" name="Romance" href="/ebooks/category/Romance">Romance</a>
+				<a class="p-2 text-muted" name="Thriller" href="/ebooks/category/Thriller">Thriller</a>
+   			</nav>
+  		</div>
+	 
+		<div class="jumbotron p-4 p-md-5 text-white rounded bg-dark" 
+			 style="background-image:url(/images/ebook.jpg); background-size: cover;background-repeat: no-repeat ">
+   			<div class="col-md-6 px-0">
+				<h1 class="display-4 font-italic">Ever Expanding E-books Collection</h1>
+				<p class="lead my-3">E-books are often considered as the future of literature. we takes care of the needs of every reader, that’s why we’re offering an extensive collection of E-books for free. </p>
+			</div>
+		</div>
+		
+		<div class="row">
+			<% ebooks.forEach(function(ebooks){ %>
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4" >
+				<img src=" <%= ebooks.image %> " width="140"  background="#777" color="#777"  >
+				<a href="/ebooks/<%=ebooks._id%>" class="text-dark">
+					<h6 class="mb-0"><%= ebooks.title %></h6>
+				</a>
+				<p class="text-muted my-0"><%= ebooks.author %></p>
+				<p class="text-muted my-0"><%= ebooks.formate %></p>
+			</div>
+			<% }) %>
+		</div>
+  	</div>
+
+	<%- include("../partials/footer") %>

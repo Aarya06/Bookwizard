@@ -1,0 +1,58 @@
+<%- include("../partials/top") %>
+<body>
+	<%- include("../partials/header") %>
+	
+	<div class="container my-5 col-lg-7">
+		<form action = "/ebooks" method = "POST">
+			<div class = "form-row">
+				<div class="form-group col-md-6">
+			    	<label for="formGroupExampleInput">Title</label>
+			    	<input type="text" class="form-control" name="ebook[title]" placeholder="Title" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="formGroupExampleInput2">Author</label>
+					<input type="text" class="form-control" name="ebook[author]" placeholder="Author" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="formGroupExampleInput2">Image url</label>
+					<input type="text" class="form-control" name="ebook[image]" placeholder="Image url" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="formGroupExampleInput2">Category</label>
+					<label for="formGroupExampleInput2">Category</label>
+					<select class="custom-select" name="ebook[category]" required>
+						<option selected>Choose...</option>
+						<option value="Biography">Biography</option>
+						<option value="Comics">Comics</option>
+						<option value="Fiction">Fiction</option>
+						<option value="Horror">Horror</option>
+						<option value="Mystery">Mystery</option>
+						<option value="Romance">Romance</option>
+						<option value="Thriller">Thriller</option>
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="formGroupExampleInput2">Download link</label>
+					<input type="text" class="form-control" name="ebook[download]" placeholder="download url" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="formGroupExampleInput2">Pages</label>
+					<input type="number" class="form-control" name="ebook[pages]" placeholder="Pages" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="formGroupExampleInput2">Publication</label>
+					<input type="text" class="form-control" name="ebook[publication]" placeholder="Publication" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlTextarea1">Description</label>
+				<textarea class="form-control" name="ebook[description]" rows="4"></textarea>
+				<script>
+    				CKEDITOR.replace( 'ebook[description]' );
+				</script> 
+  			</div>
+			<button type="submit" class="btn btn-primary btn-block">Submit</button>
+		</form>
+	</div>
+	
+	<%- include("../partials/footer") %>

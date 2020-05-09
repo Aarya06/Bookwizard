@@ -1,0 +1,88 @@
+
+<%- include("../partials/top") %>
+<body>
+	
+	<%- include("../partials/header") %>
+	<div class="container border-none">
+		<br>
+		<div class="card border-none border-0" >
+			<div class="row">
+				<div class="col-sm-4 border-right mt-5 pt-3">
+					<div class = "sticky-top">
+						<a href="<%=ebook.image%>"><img src="<%=ebook.image%>" width = "300px"></a>
+						<% if(currentUser && (currentUser.username === "bookwizard.net@gmail.com")){ %>
+						<div class="mt-2">
+							<a href = "/ebooks/<%=ebook._id%>/edit"><i class="fas fa-pen btn btn-warning"></i></a>
+							<form action = "/ebooks/<%=ebook._id%>?_method=DELETE"
+								  method = "POST" id ="delete-form">
+								<button  class="btn btn-danger btn-sm"><i class="fas fa-trash "></i></button>
+							</form>	
+						</div>
+						<% } %>
+					</div>
+				</div>
+				<div class="col-sm-7">
+					<div class="card-body p-5">
+						<h3 class="title mb-0"><%= ebook.title %></h3>
+						<strong class = "text-muted">by <%= ebook.author %></strong>
+						<p class="text-muted mt-3"><%= ebook.formate %></p>
+						<hr>
+						<a href="<%=ebook.download%>" class="btn btn-lg btn-success text-uppercase mt-5">
+							Download 
+						</a>
+					</div>
+					<div class="pl-5 mt-5">
+						<h3 class="border-bottom"> Product Specification</h3>
+						<p><strong>Original title: </strong><span><%=ebook.title%></span></p>
+						<p><strong>Publication: </strong><span><%=ebook.publication%></span></p>
+						<p><strong>Pages: </strong><span><%=ebook.pages%></span></p>
+						<p><strong>Language: </strong><span><%=ebook.language%></span></p>
+					</div>
+					<div class="pl-3 mt-5">
+						<h3 class="border-bottom"> Product Description</h3>
+						<p><%-ebook.description%></p>
+					</div>
+					<div class="pl-3 mt-5">
+						
+						<div class = "well">
+							<h3 class="border-bottom"> Product Reviews
+							
+								<a class = "btn btn-success  btn-sm float-right" 
+								   href ="/ebooks/<%=ebook._id%>/comments/new">
+									Add Comment
+								</a>
+							</h3>
+							<% if((ebook.comments) && (ebook.comments).length > 0) { %>
+							<% ebook.comments.forEach(function(comment){ %>
+							<div class = "row mb-3">
+								<div class = "col-md-12">
+									<b><%=comment.postedBy.name%></b>
+									<span class = "float-right">
+										<%=comment.created.toDateString()%>
+									</span>
+									<p class ="mb-0"><%=comment.text%></p>
+									<% if(currentUser && comment.postedBy.id.equals(currentUser._id)){ %>
+									<a href="/ebooks/<%=ebook._id%>/comments/<%=comment._id%>/edit">
+										<i class="fas fa-pen btn btn-warning"></i>
+									</a>
+									<form action = "/ebooks/<%= ebook._id %>/comments/<%=comment._id%>?_method=DELETE" 
+										  method = "POST" id ="delete-form">
+										<button  class="btn btn-sm btn-danger"><i class="fas fa-trash "></i></button>
+									</form>
+									<% } %>
+								</div>
+							</div>
+							<% }); %>
+							<% } else { %>
+							<div class = "text-center display-4 text-muted my-3">
+								no reviews yet
+							</div>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<%- include("../partials/footer") %>

@@ -1,0 +1,93 @@
+
+<%- include("../partials/top") %>
+<body>
+	
+	<%- include("../partials/header") %>
+	
+	<div class="container border-none ">
+		<br>
+		<div class="card border-none border-0">
+			<div class="row">
+				<div class="col-sm-4 border-right mt-5 pt-3">
+					<div class = "sticky-top">
+						<a href="<%=book.image%>">
+							<img src="<%=book.image%>" width = "300px">
+						</a>
+						
+						<%if(currentUser && (currentUser.username==="bookwizard.net@gmail.com")){%>
+						<div class="mt-2">
+							<a href = "/books/<%=book._id%>/edit"><i class="fas fa-pen btn btn-warning"></i></a>
+							<form action = "/books/<%=book._id%>?_method=DELETE" method = "POST" 
+								  id ="delete-form">
+								<button  class="btn btn-danger btn-sm"><i class="fas fa-trash "></i></button>
+							</form>
+						</div>
+						<% } %>
+					</div>
+				</div>
+				<div class="col-sm-7">
+					<div class="card-body pt-5">
+						<h3 class="title mb-0"><%= book.title %></h3>
+						<strong class = "text-muted">by <%= book.author %></strong>
+						<h4 class ="mt-3">₹ <%= book.price %></h4>
+						<hr>
+						<a href="/cart/add/<%=book._id%>" 
+						   class="btn btn-lg btn-outline-primary text-uppercase mt-5">Add to cart</a>
+					</div>
+					<div class="pl-3 mt-4">
+						<h3 class="border-bottom"> Product Specification</h3>
+						<p><strong>Original title: </strong><span><%=book.title%></span></p>
+						<p><strong>Publication: </strong><span><%=book.publication%></span></p>
+						<p><strong>Pages: </strong><span>Hardcover <%=book.pages%> pages</span></p>
+						<p><strong>Language: </strong><span><%=book.language%></span></p>
+					</div>
+					<div class="pl-3 mt-5">
+						<h3 class="border-bottom"> Product Description</h3>
+						<p><%-book.description%></p>
+					</div>
+					<div class="pl-3 mt-5">
+						
+						<div class = "well">
+							<h3 class="border-bottom"> Product Reviews
+							
+								<a class = "btn btn-success  btn-sm float-right" 
+								   href ="/books/<%=book._id%>/comments/new">
+									Add Review
+								</a>
+							</h3>
+							<% if((book.comments) && (book.comments).length > 0) { %>
+							<% book.comments.forEach(function(comment){ %>
+							<div class = "row mb-3">
+								<div class = "col-md-12">
+									<b><%=comment.postedBy.name%></b>
+									<span class = "float-right">
+										<%=comment.created.toDateString()%>
+									</span>
+									<p class ="mb-0"><%=comment.text%></p>
+									<% if(currentUser && comment.postedBy.id.equals(currentUser._id)){ %>
+									<a href = "/books/<%=book._id%>/comments/<%=comment._id%>/edit">
+										<i class="fas fa-pen btn btn-warning"></i>
+									</a>
+									<form action = "/books/<%= book._id %>/comments/<%=comment._id%>?_method=DELETE" 
+										  method = "POST" id ="delete-form">
+										<button  class="btn btn-sm btn-danger"><i class="fas fa-trash "></i></button>
+									</form>
+									<% } %>
+								</div>
+							</div>
+							<% }); %>
+							<% } else { %>
+							<div class = "text-center display-4 text-muted my-3">
+								no reviews yet
+							</div>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<%- include("../partials/footer") %>
+    

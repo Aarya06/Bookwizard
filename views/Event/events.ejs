@@ -1,0 +1,58 @@
+<%- include("../partials/top") %>
+
+<body id="blog_event">
+	<%- include("../partials/header") %>
+	<div class="container">
+		<div class="row text-center text-white mb-3">
+			<div class="col-lg-8 mx-auto">
+				<h1 class="display-4">Events timeline</h1>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-7 mx-auto">
+				<ul class="timeline">
+					<% if(events && events.length > 0){ %>
+					<% events.forEach(function(event){ %>
+					<li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+						<div class="timeline-arrow"></div>
+						<div>
+							<a href ="<%=event.link%>" class="h5 mb-0"><%=event.title%></a>
+							<%if(currentUser && (currentUser.username==="bookwizard.net@gmail.com")){%>
+							<span class="float-right">
+								<a href = "/events/<%=event._id%>/edit">
+									<i class="fas fa-pen btn btn-warning"></i>
+								</a>
+								<form action = "/events/<%=event._id%>?_method=DELETE" 
+									  method = "POST" id ="delete-form">
+									<button  class="btn btn-danger btn-sm">
+										<i class="fas fa-trash "></i>
+									</button>
+								</form>
+							</span>
+							<% } %>
+						</div>
+						<span class="small text-gray">
+							<%=event.date.toDateString()%>
+						</span>
+						<span class="small text-gray">
+							<%=event.location%>
+						</span>
+						<img src="<%=event.image%>" height="100px" align="right" class="p-1">
+						<p class="text-small mt-2 font-weight-light"><%-event.body%></p>
+					</li>
+					<% }); %>
+					<% } else { %>
+					<li class="timeline-item bg-white rounded ml-3 p-4 shadow">
+						<div class="timeline-arrow"></div>
+						<div class = "text-center display-4 text-muted">
+							NO UPCOMING EVENTS
+						</div>
+					</li>
+					<% } %>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<%- include("../partials/footer") %>
