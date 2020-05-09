@@ -1,5 +1,5 @@
 // ========================= NPM PACKAGES ======================================
-require('dotenv').config();
+require('dotenv').config({ path: '.env' });
 var express = require("express");
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -34,7 +34,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 // mongoose.connect("mongodb://localhost/bookwizard");
-mongoose.connect("mongodb+srv://bookwizard:"+process.env.mongodb+"@cluster0-e2y5j.mongodb.net/bookwizard");
+mongoose.connect(process.env.mongodb);
 
 // ============================= PASSPORT REQUIREMENTS =================================
 
