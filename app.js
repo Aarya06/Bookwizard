@@ -519,6 +519,9 @@ app.post("/blogs", isLoggedIn, function(req, res){
 			req.flash("error", "Something went wrong");
 			res.redirect("back");
 		}else{
+			newBlog.postedBy.id = req.user._id;
+			newBlog.postedBy.name = req.user.firstname;
+			newBlog.save();
 			res.redirect("/blogs");
 		}
 	});

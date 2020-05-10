@@ -33,10 +33,12 @@
 							<% } %>
 						</div>
 						<span class="small text-gray">
-							<%=event.date.toDateString()%>
+							<i class="far fa-calendar-alt"></i>
+							 <%=event.date.toDateString()%>	&nbsp;
 						</span>
 						<span class="small text-gray">
-							<%=event.location%>
+							<i class="fas fa-map-marker-alt"></i>
+							 <%=event.location%>
 						</span>
 						<img src="<%=event.image%>" height="100px" align="right" class="p-1">
 						<p class="text-small mt-2 font-weight-light"><%-event.body%></p>

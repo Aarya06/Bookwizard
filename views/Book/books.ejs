@@ -22,7 +22,7 @@
 		
 		<div class="jumbotron p-4 p-md-5 text-white rounded bg-dark" 
 			 style="background-image:url(/images/book.jpg); background-size: cover;
-					background-repeat: no-repeat ">
+					background-repeat: no-repeat">
 			<div class="col-md-6 px-0">
 				<h1 class="display-4 font-italic">Our Inventory Changes Constantly</h1>
 				<p class="lead my-3">
@@ -33,7 +33,7 @@
 		<div class="row">
 			<% books.forEach(function(books){ %>
 			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4" >
-				<img src=" <%= books.image %> " width="140"  background="#777" color="#777"  >
+				<img src=" <%= books.image %> " width="140"  background="#777" color="#777" >
 				<a href="/books/<%=books._id%>" class="text-dark">
 					<h6 class="mb-0"><%= books.title %></h6>
 				</a>
