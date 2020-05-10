@@ -20,9 +20,13 @@
 			</div>
 			 <div class="form-group">
 				<label for="exampleFormControlTextarea1">Description</label>
-				<textarea class="form-control" name="blog[body]" rows="4"><%= blog.body %></textarea>
+				<textarea class="form-control" name="blog[body]" rows="4" required><%= blog.body %></textarea>
 				 <script>
-    				CKEDITOR.replace( 'blog[body]' );
+					 var editor = CKEDITOR.replace( 'blog[body]' );
+					 editor.on( 'required', function( evt ) {
+						 alert( 'Description content is required.' );
+						 evt.cancel();
+					 });
 				</script>
   			</div>
 			<button type="submit" class="btn btn-primary btn-block">Update</button>

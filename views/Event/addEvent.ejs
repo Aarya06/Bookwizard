@@ -5,33 +5,41 @@
 	<div class="container my-5 col-lg-6">
 		<form action = "/events" method = "POST">
 			<div class = "row">
+				<div class="form-group col-lg-6">
+					<label for="formGroupExampleInput">Title</label>
+					<input type="text" class="form-control" name="event[title]" placeholder="Title" required>
+				</div>
 				
-			<div class="form-group col-lg-6">
-			    <label for="formGroupExampleInput">Title</label>
-			    <input type="text" class="form-control" name="event[title]" placeholder="Title" required>
+				<div class="form-group col-lg-6">
+					<label for="formGroupExampleInput2">Date</label>
+					<input type="date" class="form-control" name="event[date]" placeholder="Date" required>
+				</div>
+				
+				<div class="form-group col-lg-6">
+					<label for="formGroupExampleInput2">Location</label>
+					<input type="text" class="form-control" name="event[location]" placeholder="Event Location" required>
+				</div>
+				
+				<div class="form-group col-lg-6">
+					<label for="formGroupExampleInput2">Image Url</label>
+					<input type="text" class="form-control" name="event[image]" placeholder="image url" required>
+				</div>
 			</div>
-			<div class="form-group col-lg-6">
-			    <label for="formGroupExampleInput2">Date</label>
-			    <input type="date" class="form-control" name="event[date]" placeholder="Date" required>
-			</div>
-			</div>
-			<div class="form-group">
-			    <label for="formGroupExampleInput2">Location</label>
-			    <input type="text" class="form-control" name="event[location]" placeholder="Event Location" required>
-			</div>
-			<div class="form-group">
-			    <label for="formGroupExampleInput2">Image Url</label>
-			    <input type="text" class="form-control" name="event[image]" placeholder="image url" required>
-			</div>
+			
 			<div class="form-group">
 			    <label for="formGroupExampleInput2">Event link</label>
 			    <input type="text" class="form-control" name="event[link]" placeholder="Event link" required>
 			</div>
-			 <div class="form-group">
+			 
+			<div class="form-group">
 				<label for="exampleFormControlTextarea1">Description</label>
-				<textarea class="form-control" name="event[body]" rows="4"></textarea>
+				<textarea class="form-control" name="event[body]" rows="4" required></textarea>
 				 <script>
-    				CKEDITOR.replace( 'event[body]' );
+					 var editor = CKEDITOR.replace('event[body]');
+					 editor.on( 'required', function( evt ) {
+						 alert( 'Description content is required.' );
+						 evt.cancel();
+					 });
 				</script>
   			</div>
 			<button type="submit" class="btn btn-primary btn-block">Submit</button>

@@ -46,9 +46,13 @@
 			</div>
 			<div class="form-group">
 				<label for="exampleFormControlTextarea1">Description</label>
-				<textarea class="form-control" name="ebook[description]" rows="4"></textarea>
+				<textarea class="form-control" name="ebook[description]" rows="4" required></textarea>
 				<script>
-    				CKEDITOR.replace( 'ebook[description]' );
+					var editor = CKEDITOR.replace( 'ebook[description]' );
+					editor.on( 'required', function( evt ) {
+						 alert( 'Description content is required.' );
+						 evt.cancel();
+					 });
 				</script> 
   			</div>
 			<button type="submit" class="btn btn-primary btn-block">Submit</button>
