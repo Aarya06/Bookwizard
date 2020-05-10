@@ -26,6 +26,44 @@
 							<img src="<%=blog.image%>" height="300px" align="right" class="p-2">
 							<p class="font-italic"><%-blog.body%></p>
 						</div>
+						<div class="mt-5 pt-5">
+						
+						<div class = "well">
+							<h3 class="border-bottom">Blog Reviews
+							
+								<a class = "btn btn-success  btn-sm float-right" 
+								   href ="/blogs/<%=blog._id%>/comments/new">
+									Add Review
+								</a>
+							</h3>
+							<% if((blog.comments) && (blog.comments).length > 0) { %>
+							<% blog.comments.forEach(function(comment){ %>
+							<div class = "row mb-3">
+								<div class = "col-md-12">
+									<b><%=comment.postedBy.name%></b>
+									<span class = "float-right">
+										<%=comment.created.toDateString()%>
+									</span>
+									<p class ="mb-0"><%=comment.text%></p>
+									<% if(currentUser && ((currentUser.username === "bookwizard.net@gmail.com")||(comment.postedBy.id.equals(currentUser._id)))){ %>
+									<a href = "/blogs/<%=blog._id%>/comments/<%=comment._id%>/edit">
+										<i class="fas fa-pen btn btn-warning"></i>
+									</a>
+									<form action = "/blogs/<%= blog._id %>/comments/<%=comment._id%>?_method=DELETE" 
+										  method = "POST" id ="delete-form">
+										<button  class="btn btn-sm btn-danger"><i class="fas fa-trash "></i></button>
+									</form>
+									<% } %>
+								</div>
+							</div>
+							<% }); %>
+							<% } else { %>
+							<div class = "text-center display-4 text-muted my-3">
+								no reviews yet
+							</div>
+							<% } %>
+						</div>
+					</div>
 					</div>
 				</div>
 			</div>

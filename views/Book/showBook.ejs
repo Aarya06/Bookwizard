@@ -64,7 +64,7 @@
 										<%=comment.created.toDateString()%>
 									</span>
 									<p class ="mb-0"><%=comment.text%></p>
-									<% if(currentUser && comment.postedBy.id.equals(currentUser._id)){ %>
+									<% if(currentUser && ((currentUser.username === "bookwizard.net@gmail.com")||(comment.postedBy.id.equals(currentUser._id)))){ %>
 									<a href = "/books/<%=book._id%>/comments/<%=comment._id%>/edit">
 										<i class="fas fa-pen btn btn-warning"></i>
 									</a>

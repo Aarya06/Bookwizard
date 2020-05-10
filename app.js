@@ -530,7 +530,7 @@ app.post("/blogs", isLoggedIn, function(req, res){
 
 // READ BLOG
 app.get("/blogs/:id", function(req, res){
-	Blog.findById(req.params.id,function(err, foundBLog){
+	Blog.findById(req.params.id).populate("comments").exec(function(err, foundBLog){
 		if(err){
 			console.log(err);
 			req.flash("error", "Something went wrong");
@@ -579,6 +579,88 @@ app.delete("/blogs/:id", (isAdmin || isBlogOwner), function(req, res){
 		}else{
 			req.flash("success", "Blog Deleted");
 			res.redirect("/blogs");
+		}
+	});
+});
+
+//========================== BLOG COMMENT ROUTE =================================
+
+//Add new comment form
+app.get("/blogs/:id/comments/new", isLoggedIn, function(req,res){
+	Blog.findById(req.params.id, function(err, blog){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Blog/comments/addComment", {blog: blog, title:"Comment"});
+		}
+	});
+});
+
+//Add new comment
+app.post("/blogs/:id/comments", isLoggedIn, function(req, res){
+		Blog.findById(req.params.id, function(err, blog){
+			if(err){
+				console.log(err);
+				req.flash("error", "Something went wrong");
+				res.redirect("back");
+			}else{
+				Comment.create(req.body.comment, function(err, comment){
+					if(err){
+						console.log(err);
+						req.flash("error", "Something went wrong");
+						res.redirect("back");
+					}else{
+						comment.postedBy.id = req.user._id;
+						comment.postedBy.name = req.user.firstname;
+						comment.save();
+						blog.comments.push(comment);
+						blog.save();
+						req.flash("success", "Comment Posted")
+						res.redirect("/blogs/"+req.params.id);
+					}
+				});
+			}
+		});
+});
+
+//Edit a comment form
+app.get("/blogs/:id/comments/:comment_id/edit", checkCommentOwner, function(req, res){
+	Comment.findById(req.params.comment_id, function(err, comment){
+		if(err){
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Blog/comments/editComment",{blog_id: req.params.id, comment:comment, title:"Comment"})
+		}
+	});
+});
+
+// Edit a comment
+app.put("/blogs/:id/comments/:comment_id", checkCommentOwner, function(req, res){
+	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			req.flash("success", "Comment Updated");
+			res.redirect("/blogs/" +req.params.id);
+		}
+	});
+});
+
+//Delete a comment
+app.delete("/blogs/:id/comments/:comment_id", checkCommentOwner, function(req,res){
+	Comment.findByIdAndRemove(req.params.comment_id, function(err, comment){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			req.flash("success", "Comment deleted");
+			res.redirect("/blogs/"+req.params.id);
 		}
 	});
 });
