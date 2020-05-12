@@ -36,14 +36,14 @@
 					</select>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="formGroupExampleInput2">Pages</label>
-					<input type="number" class="form-control" name="book[pages]" value = "<%= book.pages %>" required>
-				</div>
-				<div class="form-group col-md-6">
 					<label for="formGroupExampleInput2">Publication</label>
 					<input type="text" class="form-control" name="book[publication]" value = "<%= book.publication %>" required>
 				</div>
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-3">
+					<label for="formGroupExampleInput2">Pages</label>
+					<input type="number" class="form-control" name="book[pages]" value = "<%= book.pages %>" required>
+				</div>
+				<div class="form-group col-md-3">
 					<label for="formGroupExampleInput2">BestSeller</label>
 					<select class="custom-select" name="book[bestseller]">
 						<option value="<%=book.bestseller%>"><%=book.bestseller%></option>
@@ -51,6 +51,23 @@
 						<option value="Yes">Yes</option>
 					</select>
 				</div>
+				<div class="form-group col-md-3">
+					<label for="formGroupExampleInput2">Condition</label>
+					<select class="custom-select" name="book[condition]">
+						<option value="<%=book.condition%>"><%=book.condition%></option>
+						<option value="No">New</option>
+						<option value="Yes">Old</option>
+					</select>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="formGroupExampleInput2">Type</label>
+					<select class="custom-select" name="book[type]">
+						<option value="<%=book.type%>"><%=book.type%></option>
+						<option value="No">Hardcover</option>
+						<option value="Yes">Paperpack</option>
+					</select>
+				</div>
+				
 				
 			</div>
 			<div class="form-group">

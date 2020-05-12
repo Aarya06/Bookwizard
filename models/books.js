@@ -11,6 +11,8 @@ var bookSchema = new mongoose.Schema({
 	publication: String,
 	category: String,
 	description: String,
+	condition:{type: String, default: "New"},
+	type:{type: String, default: "Hardcover"},
 	created: {type: Date, default: Date.now},
 	bestseller: {type:String, default: "No"},
 	comments: [
