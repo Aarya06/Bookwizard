@@ -938,7 +938,7 @@ app.get("/myOrders", isLoggedIn, function(req, res){
 
 // WISHLIST
 
-app.get("/wishlist/add/:id", function(req, res){	
+app.get("/wishlist/add/:id",isLoggedIn, function(req, res){	
 	Book.findById(req.params.id, function(err, book){
 		if(err){
 			console.log(err);
@@ -958,7 +958,7 @@ app.get("/wishlist/add/:id", function(req, res){
 		});
 		
 		req.flash("success", "Added to wishlist");
-		res.redirect("back");
+		res.redirect("/books/"+req.params.id);
 	});
 });
 
