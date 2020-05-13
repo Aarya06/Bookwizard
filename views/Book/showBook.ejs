@@ -11,7 +11,8 @@
 				<div class="col-sm-4 border-right mt-5 pt-3">
 					<div class = "sticky-top">
 						<a href="<%=book.image%>">
-							<img src="<%=book.image%>" width = "300px">
+							<img src="<%=book.image%>" class= "img-fluid">
+							
 						</a>
 						
 						<%if(currentUser && (currentUser.username==="bookwizard.net@gmail.com")){%>
@@ -25,7 +26,7 @@
 						<% } %>
 					</div>
 				</div>
-				<div class="col-sm-7">
+				<div class="col-sm-8">
 					<div class="card-body pt-5">
 						<h3 class="title mb-0"><%= book.title %></h3>
 						<strong class = "text-muted">by <%= book.author %></strong>

@@ -16,7 +16,7 @@
 					<% events.forEach(function(event){ %>
 					<li class="timeline-item bg-white rounded ml-3 p-4 shadow">
 						<div class="timeline-arrow"></div>
-						<div>
+						<div class="mb-2">
 							<a href ="<%=event.link%>" class="h5 mb-0"><%=event.title%></a>
 							<%if(currentUser && (currentUser.username==="bookwizard.net@gmail.com")){%>
 							<span class="float-right">
@@ -40,7 +40,7 @@
 							<i class="fas fa-map-marker-alt"></i>
 							 <%=event.location%>
 						</span>
-						<img src="<%=event.image%>" height="100px" align="right" class="p-1">
+						<img src="<%=event.image%>" height="100px" class="float-right">
 						<p class="text-small mt-2 font-weight-light"><%-event.body%></p>
 					</li>
 					<% }); %>

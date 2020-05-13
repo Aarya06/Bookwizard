@@ -39,8 +39,9 @@ body {
   margin-bottom: 1.5rem;
   text-align: center;
 }
-.marketing h2 {
-  font-weight: 400;
+.marketing h3 {
+	font-weight: 400;
+	margin-top: 10px;
 }
 .marketing .col-lg-4 p {
   margin-right: .75rem;
@@ -48,6 +49,9 @@ body {
 }
 .featurette-divider {
   margin: 5rem 0; 
+}
+.featurette-image {
+	vertical-align: auto;
 }
 .featurette-heading {
   font-weight: 300;
@@ -154,6 +158,9 @@ li.timeline-item::before {
   height: 500px;
 }
 
+.blogimg{
+	max-width: 50%;
+}
 
 
 .custom-scrollbar-css {
