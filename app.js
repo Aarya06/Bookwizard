@@ -25,6 +25,7 @@ var User = require("./models/users");
 var Comment = require("./models/comments");
 var Cart = require("./models/cart");
 var Order = require("./models/orders");
+var Wishlist = require("./models/wishlist");
 
 
 // ================================= MONGO-DB CONNECTION ==============================
@@ -933,6 +934,57 @@ app.get("/myOrders", isLoggedIn, function(req, res){
 			res.render("myOrders",{ orders: orders, title:"My Orders"}); 
 		}
 	}).sort({"created":-1});
+});
+
+// WISHLIST
+
+app.get("/wishlist/add/:id", function(req, res){	
+	Book.findById(req.params.id, function(err, book){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			return res.redirect("back");
+		}
+		Wishlist.findOne({bookId:req.params.id}, function(err, wishlist){
+			if(wishlist){
+			}else{
+				wishlist = new Wishlist({
+				user: req.user._id,
+				items: book,
+			    bookId: req.params.id
+				});
+				wishlist.save();
+			}
+		});
+		
+		req.flash("success", "Added to wishlist");
+		res.redirect("back");
+	});
+});
+
+app.get("/myWishlist", isLoggedIn, function(req, res){
+	Wishlist.find({user: req.user}, function(err, wishlist){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("wishlist",{ wishlist: wishlist, title:"My Wishlist"}); 
+		}
+	}).sort({"created":-1});
+});
+
+app.get("/wishlist/remove/:id", isLoggedIn, function(req, res){
+	Wishlist.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			req.flash("success", "Removed from Wishlist");
+			res.redirect("/myWishlist");
+		}
+	});
 });
 
 // ====================================== MIDDLEWARE FUNCTIONS =====================================

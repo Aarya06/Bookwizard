@@ -1,0 +1,80 @@
+
+<%- include("partials/top") %>
+<body>
+	<%- include("partials/header") %>
+	<%if(wishlist && wishlist.length > 0){ %>
+	<div class="container" id="order">
+		<div><h1>Your Wishlist</h1>
+			<hr>
+		</div>
+		
+		<div class="col-lg-12 p-2 bg-white rounded shadow my-1">
+			<div class="table-responsive">
+				<table class="table m-0">
+					<thead>
+						<tr>
+							<th scope="col" class="border-0 bg-light">
+								<div class=" px-3 text-uppercase">Product</div>
+							</th>
+							<th scope="col" class="border-0 bg-light">
+								<div class=" text-uppercase">Price</div>
+							</th>
+							<th scope="col" class="border-0 bg-light">
+								<div class=" text-uppercase">Add To Cart</div>
+							</th>
+							<th scope="col-sm-6" class="border-0 bg-light">
+								<div class=" text-uppercase">Remove</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% wishlist.forEach(function(wish){ %>
+						
+						<tr class="border-bottom">
+							<th scope="row" class="border-0 p-0">
+								<div class="p-2">
+									<img src="<%= wish.items.image %>" width="70" class="img-fluid                                                   shadow-sm">
+									<div class="ml-3 d-inline-block align-middle">
+										<h5 class="mb-0">
+											<a href="#" class="text-dark d-inline-block align-middle">
+												<%=wish.items.title%>
+											</a>
+										</h5>
+										<span class="text-muted font-weight-normal font-italic d-block">
+											Category: <%=wish.items.category%>
+										</span>
+									</div>
+								</div>
+							</th>
+							<td class="border-0 align-middle">
+								<strong>₹<%=wish.items.price%></strong>
+							</td>
+							<td class="border-0 align-middle">
+								<a href="/cart/add/<%=wish.items._id%>" 
+						   class="btn btn-md btn-success text-uppercase">Add to cart</a>
+							</td>
+							<td class="border-0 align-middle">
+								<a href="/wishlist/remove/<%=wish._id%>" class="text-dark">
+											<i class="fa fa-trash"></i>
+										</a>
+							</td>
+						</tr>
+						<% }) %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<% }else{ %>
+	<div class = "container p-5 my-5 rounded shadow" id="order">
+		<center>
+			<img src = "/images/wishlist-empty.jpg" height = "250px">
+			<div class = "mt-5">
+				<a href="/books" class="btn btn-primary rounded-pill px-5">Add Now</a>
+			</div>
+			
+		</center>
+	</div>
+	<% } %>
+
+	<%- include("partials/footer") %>

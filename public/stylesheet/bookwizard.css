@@ -81,6 +81,20 @@ body {
 	font-weight:600;
 }
 
+.jumbotronBook{
+	width:100%;
+	height:auto;
+	background-image:url(/images/book.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.jumbotronEbook{
+	width:100%;
+	height:auto;
+	background-image:url(/images/ebook.jpg); 
+	background-size: cover;
+	background-repeat: no-repeat
+}
 
 /* ========================================== BLOG/EVENT ======================================= */
 
