@@ -32,9 +32,9 @@
 		<form action = "/searchBook" method = "POST">
 			<div class="form-row mb-4 d-flex justify-content-center">
 				<div class="col-sm-10">
-					<input type="text" class="form-control" name = "bookname" placeholder="Search Book">
+					<input type="text" class="form-control" name = "bookname" placeholder="Search Book" required>
 			    </div>
-			    <button class="btn btn-primary btn-md">Search</button>
+			    <button class="btn btn-dark btn-md">Search</button>
 			</div>
 		</form>
 		<% if(books && books.length > 0){ %>
