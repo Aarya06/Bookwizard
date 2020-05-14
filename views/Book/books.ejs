@@ -37,7 +37,7 @@
 			    <button class="btn btn-primary btn-md">Search</button>
 			</div>
 		</form>
-		
+		<% if(books && books.length > 0){ %>
 		<div class="row ml-5">
 			<% books.forEach(function(books){ %>
 			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 px-lg-4" >
@@ -50,6 +50,11 @@
 			</div>
 			<% }) %>
 		</div>
+		<% }else{ %>
+		<center>
+			<img src = "/images/no-resultfound.jpg" class = "img-fluid">
+		</center>
+		<% } %>
 	</div>
 
       
