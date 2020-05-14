@@ -110,7 +110,7 @@ app.get("/", function(req, res){
 			req.flash("error", "Something went wrong");
 			res.redirect("back");
 		}else{
-			res.render("home", {books: books, title:"bookwizard"});
+			res.render("Index/home", {books: books, title:"bookwizard"});
 		}
 	}).sort({"created":-1});
 	
@@ -127,6 +127,19 @@ app.get("/books", function(req, res){
 			res.render("Book/books", {books: books , title:"Books"});
 		}
 	}).sort({"created":-1});
+});
+
+// SEARCH BOOK
+app.post("/searchBook", function(req, res){
+	Book.find({title: {$regex: new RegExp("^"+req.body.bookname,"i")}}, function(err, books){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Book/books", {books: books , title:"Books"});
+		}
+	});
 });
 
 // SHOW BOOKS BY CATEGORY
@@ -316,6 +329,19 @@ app.get("/ebooks", function(req, res){
 			res.render("Ebook/ebooks", {ebooks: ebooks, title:"Ebooks"});
 		}
 	}).sort({"created":-1});
+});
+
+// SEARCH EBOOK
+app.post("/searchEbook", function(req, res){
+	Ebook.find({title: {$regex: new RegExp("^"+req.body.ebookname,"i")}}, function(err, ebooks){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Ebook/ebooks", {ebooks: ebooks , title:"Ebooks"});
+		}
+	});
 });
 
 // SHOW EBOOKS BY CATEGORY
@@ -751,10 +777,10 @@ app.delete("/events/:id", isAdmin, function(req, res){
 // SHOPPING CART PAGE
 app.get("/cart", function(req, res){
 	if(!req.session.cart){
-		return res.render("cart", {books: null, title:"Cart"});
+		return res.render("Shop/cart", {books: null, title:"Cart"});
 	}
 	var cart = new Cart(req.session.cart);
-	res.render("cart",  {books: cart.getItems(), totalPrice: cart.totalPrice, title:"Cart"});
+	res.render("Shop/cart",  {books: cart.getItems(), totalPrice: cart.totalPrice, title:"Cart"});
 	
 });
 
@@ -791,7 +817,7 @@ app.get("/checkout", isLoggedIn, function(req,res){
 		return res.redirect("/cart");
 	}
 	var cart = new Cart(req.session.cart);
-	res.render("checkout",  {books: cart.getItems(), totalPrice: cart.totalPrice, title:"Checkout"});
+	res.render("Shop/checkout",  {books: cart.getItems(), totalPrice: cart.totalPrice, title:"Checkout"});
 });
 
 // CHECKOUT THE ITEMS
@@ -842,7 +868,7 @@ app.post("/checkout", isLoggedIn, function(req, res){
 
 // LOGIN FORM
 app.get("/login", function(req, res){
-	res.render("signin",{title:"Log In"});
+	res.render("Authentication/signin",{title:"Log In"});
 });
 
 // LOGIN
@@ -871,7 +897,7 @@ app.get("/logout", function(req,res){
 
 // REGISTERATION FORM
 app.get("/register", function(req, res){
-	res.render("register",{title:"Register"});
+	res.render("Authentication/register",{title:"Register"});
 });
 
 
@@ -911,10 +937,11 @@ app.get('/auth/google/callback',
     res.redirect('/');
   });
 
+// ========================================= INDEX ==============================================
 
 // ADMIN PAGE
 app.get("/admin", isAdmin, function(err, res){
-	res.render("admin",{title:"Admin Area"});
+	res.render("Index/admin",{title:"Admin Area"});
 })
 
 
@@ -931,13 +958,13 @@ app.get("/myOrders", isLoggedIn, function(req, res){
 				cart = new Cart(order.cart);
 				order.items = cart.getItems();
 			});
-			res.render("myOrders",{ orders: orders, title:"My Orders"}); 
+			res.render("Index/myOrders",{ orders: orders, title:"My Orders"}); 
 		}
 	}).sort({"created":-1});
 });
 
-// WISHLIST
 
+// ADD TO WISHLIST
 app.get("/wishlist/add/:id",isLoggedIn, function(req, res){	
 	Book.findById(req.params.id, function(err, book){
 		if(err){
@@ -962,6 +989,8 @@ app.get("/wishlist/add/:id",isLoggedIn, function(req, res){
 	});
 });
 
+
+// VIEW YOUR WISHLIST
 app.get("/myWishlist", isLoggedIn, function(req, res){
 	Wishlist.find({user: req.user}, function(err, wishlist){
 		if(err){
@@ -969,11 +998,13 @@ app.get("/myWishlist", isLoggedIn, function(req, res){
 			req.flash("error", "Something went wrong");
 			res.redirect("back");
 		}else{
-			res.render("wishlist",{ wishlist: wishlist, title:"My Wishlist"}); 
+			res.render("Index/wishlist",{ wishlist: wishlist, title:"My Wishlist"}); 
 		}
 	}).sort({"created":-1});
 });
 
+
+// REMOVE ITEM FROM WISHLIST
 app.get("/wishlist/remove/:id", isLoggedIn, function(req, res){
 	Wishlist.findByIdAndRemove(req.params.id, function(err){
 		if(err){
@@ -987,7 +1018,7 @@ app.get("/wishlist/remove/:id", isLoggedIn, function(req, res){
 	});
 });
 
-// ====================================== MIDDLEWARE FUNCTIONS =====================================
+// ================================== MIDDLEWARE FUNCTIONS =====================================
 
 // CHECK LOGIN FUNCTION
 function isLoggedIn(req, res, next){
@@ -1039,6 +1070,7 @@ function isBlogOwner(req, res, next){
 	}
 }
 
+// CHECK COMMENT OWNER
 function checkCommentOwner(req, res, next){
 	if(req.isAuthenticated()){
 		Comment.findById(req.params.comment_id, function(err, found){
@@ -1061,12 +1093,13 @@ function checkCommentOwner(req, res, next){
 	}
 }
 
+
+// SERVER 
 let port = process.env.PORT;
 if(port == null || port == ""){
 	port = 4000;
 }
 
-// SERVER START
 app.listen(port, function(){
 	console.log("Server has been Started");
 });

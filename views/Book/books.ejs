@@ -28,6 +28,16 @@
 				</p>
 			</div>
 		</div>
+		
+		<form action = "/searchBook" method = "POST">
+			<div class="form-row mb-4 d-flex justify-content-center">
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name = "bookname" placeholder="Search Book">
+			    </div>
+			    <button class="btn btn-primary btn-md">Search</button>
+			</div>
+		</form>
+		
 		<div class="row ml-5">
 			<% books.forEach(function(books){ %>
 			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4 px-lg-4" >
