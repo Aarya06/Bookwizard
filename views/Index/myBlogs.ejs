@@ -1,0 +1,66 @@
+
+	
+	<%if(blog && blog.length > 0){ %>
+		
+        <div class="col-lg-12 p-2 bg-white rounded shadow my-3">
+		<div class="table-responsive">
+            <table class="table m-0">
+              <thead>
+                <tr>
+                  <th scope="col" class="border-0 bg-light text-center">
+                    <div class=" px-3 text-uppercase">Blog</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light text-center">
+                    <div class=" px-3 text-uppercase">Title</div>
+                  </th>
+                  <th scope="col" class="border-0 bg-light">
+                    <div class=" text-uppercase">View</div>
+                  </th>
+                  
+                  <th scope="col" class="border-0 bg-light">
+                    <div class=" text-uppercase">Remove</div>
+                  </th>
+                </tr>
+              </thead>
+				
+              <tbody>
+				  <% blog.forEach(function(blog){ %>
+                <tr class="border-bottom">
+                  <th scope="row" class="border-0 p-0">
+                    <div class="p-2">
+                      <img src="<%=blog.image%>"  class="img-fluid shadow-sm" style=" max-height:200px">
+                      
+                    </div>
+                  </th>
+                  <td>
+                  	<div class="ml-3 d-inline-block align-middle">
+                        <h5 class="mb-0"> <a href="/blogs/<%=blog._id%>" class="text-dark d-inline-block align-middle"><%=blog.title%></a></h5><span class="text-muted font-weight-normal font-italic d-block"><%=blog.created.toDateString()%></span>
+                      </div>
+                  </td>
+                   
+                  <td class="border-0 align-middle"><a href="/blogs/<%=blog._id%>" class="btn btn-block btn-success">view</a></td>
+                 
+                  <td class="border-0 align-middle"><form action = "/blogs/<%=blog._id%>?_method=DELETE" method = "POST" id ="delete-form">
+									<button class = "btn btn-link">
+										<i class="fas fa-trash "></i>
+									</button>
+								</form></td>
+                </tr>
+				  <% }) %>
+              </tbody>
+				
+
+            </table>
+          </div>
+      </div>
+	<% }else{ %>
+	<div class = "container p-5 my-2 rounded shadow" id="order">
+		<center>
+			<img src = "/images/noblog.png" height = "250px">
+			<div class = "mt-5">
+				<a href="/blogs" class="btn btn-primary rounded-pill px-5">Post Now</a>
+			</div>
+			
+		</center>
+	</div>
+	<% } %>

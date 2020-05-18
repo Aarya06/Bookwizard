@@ -6,7 +6,8 @@ var userSchema = new mongoose.Schema({
 	lastname: String,
 	username: String,
 	password: String,
-	googleId: String
+	googleId: String,
+	isVerified: {type: Boolean, default: false}
 });
 
 userSchema.plugin(passportLocalMongoose);

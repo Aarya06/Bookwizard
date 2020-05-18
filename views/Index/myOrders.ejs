@@ -1,16 +1,6 @@
 
-<%- include("../partials/top") %>
-<body>
-	<%- include("../partials/header") %>
-	
 	<%if(orders && orders.length > 0){ %>
-	<div class="container" id="order">
 	
-		<div>
-			<h1>Your Orders</h1>
-			<hr>
-		</div>
-		
 		<% orders.forEach(function(order){ %>
         
         <div class="col-lg-12 p-2 bg-white rounded shadow my-1">
@@ -62,22 +52,19 @@
 								<a href="/books/<%=book.item._id%>" class="text-dark">Buy again</a>
 							</td>
 						</tr>
-						<% }) %>
+						<% }); %>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		<% }) %>
-	</div>
+		<% }); %>
 	<% }else{ %>
-	<div class = "container p-5 my-5 rounded shadow" id="order">
+	<div class = "container p-5 my-2 rounded shadow" id="order">
 		<center>
-			<h1 class="display-4">Oops!</h1>
 			<img src = "/images/empty-order.png" height = "250px">
-			<p class="lead">Begin your journey.</p>
-			<a href="/books" class="btn btn-primary rounded-pill px-5">Shop Now</a>
+			<div class="mt-5">
+				<a href="/books" class="btn btn-primary rounded-pill px-5">Shop Now</a>
+			</div>
 		</center>
 	</div>
 	<% } %>
-	
-	<%- include("../partials/footer") %>

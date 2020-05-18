@@ -8,6 +8,7 @@ var expressSession = require("express-session");
 var expressSanitizer = require("express-sanitizer");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
+var nodemailer = require("nodemailer");
 var methodOverride = require("method-override");
 var mongoStore = require("connect-mongo")(expressSession);
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -26,6 +27,7 @@ var Comment = require("./models/comments");
 var Cart = require("./models/cart");
 var Order = require("./models/orders");
 var Wishlist = require("./models/wishlist");
+var Exchange = require("./models/exchange");
 
 
 // ================================= MONGO-DB CONNECTION ==============================
@@ -75,9 +77,10 @@ passport.use(new GoogleStrategy({
 		}else{
 			user = new User({
 				googleId: profile.id,
-				username: profile.displayName,
-				firstname:profile.name.givenName,
-				lastname:profile.name.familyName
+				username: profile.emails[0].value,
+				firstname: profile.name.givenName,
+				lastname: profile.name.familyName,
+				isVerified: true
 			});
 			user.save();
 		}
@@ -85,6 +88,18 @@ passport.use(new GoogleStrategy({
 	});
 }
 ));
+
+// ===================================== SEND MAIL =================================
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.gmailAccount,
+    pass: process.env.gmailPass
+  }
+});
+
+var url = process.env.siteUrl;
 
 
 // ============================== PACKAGES REQUIREMENTS ===============================
@@ -139,7 +154,7 @@ app.post("/searchBook", function(req, res){
 		}else{
 			res.render("Book/books", {books: books , title:"Books"});
 		}
-	});
+	}).sort({"created":-1});
 });
 
 // SHOW BOOKS BY CATEGORY
@@ -275,7 +290,7 @@ app.post("/books/:id/comments", isLoggedIn, function(req, res){
 });
 
 //Edit a comment form
-app.get("/books/:id/comments/:comment_id/edit", checkCommentOwner, function(req, res){
+app.get("/books/:id/comments/:comment_id/edit",(isAdmin || checkCommentOwner), function(req, res){
 	Comment.findById(req.params.comment_id, function(err, comment){
 		if(err){
 			req.flash("error", "Something went wrong");
@@ -287,7 +302,7 @@ app.get("/books/:id/comments/:comment_id/edit", checkCommentOwner, function(req,
 });
 
 // Edit a comment
-app.put("/books/:id/comments/:comment_id", checkCommentOwner, function(req, res){
+app.put("/books/:id/comments/:comment_id",(isAdmin || checkCommentOwner), function(req, res){
 	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
 		if(err){
 			console.log(err);
@@ -301,7 +316,7 @@ app.put("/books/:id/comments/:comment_id", checkCommentOwner, function(req, res)
 });
 
 //Delete a comment
-app.delete("/books/:id/comments/:comment_id", checkCommentOwner, function(req,res){
+app.delete("/books/:id/comments/:comment_id",(isAdmin || checkCommentOwner), function(req,res){
 	Comment.findByIdAndRemove(req.params.comment_id, function(err, comment){
 		if(err){
 			console.log(err);
@@ -341,7 +356,7 @@ app.post("/searchEbook", function(req, res){
 		}else{
 			res.render("Ebook/ebooks", {ebooks: ebooks , title:"Ebooks"});
 		}
-	});
+	}).sort({"created":-1});
 });
 
 // SHOW EBOOKS BY CATEGORY
@@ -477,7 +492,7 @@ app.post("/ebooks/:id/comments", isLoggedIn, function(req, res){
 });
 
 //Edit a comment form
-app.get("/ebooks/:id/comments/:comment_id/edit", checkCommentOwner, function(req, res){
+app.get("/ebooks/:id/comments/:comment_id/edit",(isAdmin || checkCommentOwner), function(req, res){
 	Comment.findById(req.params.comment_id, function(err, comment){
 		if(err){
 			req.flash("error", "Something went wrong");
@@ -489,7 +504,7 @@ app.get("/ebooks/:id/comments/:comment_id/edit", checkCommentOwner, function(req
 });
 
 // Edit a comment
-app.put("/ebooks/:id/comments/:comment_id", checkCommentOwner, function(req, res){
+app.put("/ebooks/:id/comments/:comment_id",(isAdmin || checkCommentOwner), function(req, res){
 	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
 		if(err){
 			console.log(err);
@@ -503,7 +518,7 @@ app.put("/ebooks/:id/comments/:comment_id", checkCommentOwner, function(req, res
 });
 
 //Delete a comment
-app.delete("/ebooks/:id/comments/:comment_id", checkCommentOwner, function(req,res){
+app.delete("/ebooks/:id/comments/:comment_id", (isAdmin ||checkCommentOwner), function(req,res){
 	Comment.findByIdAndRemove(req.params.comment_id, function(err, comment){
 		if(err){
 			console.log(err);
@@ -653,7 +668,7 @@ app.post("/blogs/:id/comments", isLoggedIn, function(req, res){
 });
 
 //Edit a comment form
-app.get("/blogs/:id/comments/:comment_id/edit", checkCommentOwner, function(req, res){
+app.get("/blogs/:id/comments/:comment_id/edit",(isAdmin || checkCommentOwner), function(req, res){
 	Comment.findById(req.params.comment_id, function(err, comment){
 		if(err){
 			req.flash("error", "Something went wrong");
@@ -665,7 +680,7 @@ app.get("/blogs/:id/comments/:comment_id/edit", checkCommentOwner, function(req,
 });
 
 // Edit a comment
-app.put("/blogs/:id/comments/:comment_id", checkCommentOwner, function(req, res){
+app.put("/blogs/:id/comments/:comment_id",(isAdmin || checkCommentOwner), function(req, res){
 	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
 		if(err){
 			console.log(err);
@@ -679,7 +694,7 @@ app.put("/blogs/:id/comments/:comment_id", checkCommentOwner, function(req, res)
 });
 
 //Delete a comment
-app.delete("/blogs/:id/comments/:comment_id", checkCommentOwner, function(req,res){
+app.delete("/blogs/:id/comments/:comment_id",(isAdmin || checkCommentOwner), function(req,res){
 	Comment.findByIdAndRemove(req.params.comment_id, function(err, comment){
 		if(err){
 			console.log(err);
@@ -691,6 +706,113 @@ app.delete("/blogs/:id/comments/:comment_id", checkCommentOwner, function(req,re
 		}
 	});
 });
+
+// ================================= EXCHANGE ==================================
+
+// ALL EXCHANGE REQUESTS
+app.get("/exchange", function(req,res){
+	Exchange.find({}, function(err, exchange){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Exchange/exchange",{exchange: exchange, title:"exchange"});
+		}
+	}).sort({"created":-1});
+});
+
+// SEARCH EXCHANGE
+app.post("/searchExchange", function(req, res){
+	Exchange.find({b2_Title: {$regex: new RegExp("^"+req.body.exchangename,"i")}}, function(err, exchange){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Exchange/exchange", {exchange: exchange , title:"Exchange"});
+		}
+	}).sort({"created":-1});
+});
+
+// POST EXCHANGE FORM
+app.get("/exchange/new", isLoggedIn, function(req,res){
+	res.render("Exchange/addExchange",{title:"exchange"});
+});
+
+// POST NEW EXCHANGE
+app.post("/exchange", isLoggedIn, function(req, res){
+	Exchange.create(req.body.exchange, function(err, newExchange){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			newExchange.postedBy.id = req.user._id;
+			newExchange.postedBy.firstname = req.user.firstname;
+			newExchange.postedBy.lastname = req.user.lastname;
+			newExchange.save();
+			res.redirect("/exchange");
+		}
+	});
+});
+
+// VIEW EXCHANGE DETAILS
+app.get("/exchange/:id", function(req,res){
+	Exchange.findById(req.params.id, function(err, found){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Exchange/showExchange",{exchange:found, title:"exchange"});
+		}
+	});
+	
+});
+
+// EXCHANGE UPDATE FORM
+app.get("/exchange/:id/edit",(isAdmin || isExchangeOwner), function(req, res){
+	Exchange.findById(req.params.id, function(err, found){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			res.render("Exchange/editExchange", {exchange: found, title:"Exchange"});
+		}
+	});
+});
+
+
+//POST UPDATED EXCHANGE
+app.put("/exchange/:id",(isAdmin || isExchangeOwner), function(req, res){
+	Exchange.findByIdAndUpdate(req.params.id, req.body.exchange, function(err, updatedExchange){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			req.flash("success", "Exchange Updated");
+			res.redirect("/exchange/" +req.params.id);
+		}
+	});
+});
+
+// EXCHANGE DELETE
+app.delete("/exchange/:id",(isAdmin || isExchangeOwner), function(req, res){
+	Exchange.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			console.log(err);
+			req.flash("error", "Something went wrong");
+			res.redirect("back");
+		}else{
+			req.flash("success", "Exchange Deleted");
+			res.redirect("/exchange");
+		}
+	});
+});
+
 
 // ===================================== EVENTS =========================================
 
@@ -855,6 +977,20 @@ app.post("/checkout", isLoggedIn, function(req, res){
 				  res.redirect("back");
 			  }else{
 				  req.session.cart = null;
+				  var mailOptions = {
+					  from: 'BOOKWIZARD',
+					  to: req.user.username,
+					  subject: 'ORDER CONFIRMATION',
+					  text: 'CHECK YOUR ACCOUNT FOR DETAILS',
+					  html: `Your order has been confirmed. Check your account for more details or click <a href = "${url}/myAccount">here</a>`
+				  };
+				  transporter.sendMail(mailOptions, function(error, info){
+					  if (error) {
+						  console.log(error);
+					  } else {
+						  console.log('Email sent: ' + info.response);
+					  }
+				  });
 				  req.flash("success", "Payment Succesful");
 				  res.redirect("/");
 			  }
@@ -871,11 +1007,18 @@ app.get("/login", function(req, res){
 	res.render("Authentication/signin",{title:"Log In"});
 });
 
+// 	VERIFY EMAIL
+app.get("/verify/:token", function(req,res){
+	User.findByIdAndUpdate(req.params.token,{isVerified:true}, function(err,user){
+		res.redirect("/login");
+	});
+});
+
 // LOGIN
 app.post("/login", passport.authenticate("local", {
 	failureRedirect: "/login",
 	failureFlash: true
-}),function(req, res){
+}),isVerified, function(req, res){
 	if(req.session.oldUrl){
 		var rediectUrl = req.session.oldUrl;
 		req.session.oldUrl = null;
@@ -911,23 +1054,40 @@ app.post("/register", function(req, res){
 			req.flash("error", err.message);
 			return res.redirect("/register");
 		}
-		passport.authenticate("local")(req, res, function(){
-			if(req.session.oldUrl){
-				var rediectUrl = req.session.oldUrl;
-				req.session.oldUrl = null;
-				res.redirect(rediectUrl);
-			}else{
-				req.flash("success", "Welcome to bookwizard "+ user.firstname);
-				res.redirect("/");
+		var token = user._id;
+		var mailOptions = {
+			from: 'BOOKWIZARD',
+			to: user.username,
+			subject: 'EMAIL VERIFICATION',
+			text: 'CLICK TO VERIFY',
+			html:`Click <a href = "${url}/verify/${token}">here</a> to verify your email`
+		};
+		transporter.sendMail(mailOptions, function(error, info){
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('Email sent: ' + info.response);
 			}
 		});
+		// passport.authenticate("local")(req, res, function(){
+		// 	if(req.session.oldUrl){
+		// 		var rediectUrl = req.session.oldUrl;
+		// 		req.session.oldUrl = null;
+		// 		res.redirect(rediectUrl);
+		// 	}else{
+		// 		req.flash("success", "Welcome to bookwizard "+ user.firstname);
+		// 		res.redirect("/");
+		// 	}
+		// });
+		req.flash("success", "Registration successful. Verification link sent to your email");
+		res.redirect("/login");
 	});
 });
 
 
 // GOOGLE LOGIN PAGE
 app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
+  passport.authenticate('google', { scope: ['profile','email'] }));
 
 
 // GOOGLE LOGIN
@@ -942,24 +1102,44 @@ app.get('/auth/google/callback',
 // ADMIN PAGE
 app.get("/admin", isAdmin, function(err, res){
 	res.render("Index/admin",{title:"Admin Area"});
-})
+});
 
-
-// VIEW YOUR ORDER HISTORY
-app.get("/myOrders", isLoggedIn, function(req, res){
-	Order.find({user: req.user}, function(err, orders){
+// MY ACCOUNT
+app.get("/myAccount", isLoggedIn, function(req, res){
+	Wishlist.find({user: req.user}, function(err, wishlist){
 		if(err){
 			console.log(err);
 			req.flash("error", "Something went wrong");
 			res.redirect("back");
-		}else{
-			var cart;
-			orders.forEach(function(order){
-				cart = new Cart(order.cart);
-				order.items = cart.getItems();
-			});
-			res.render("Index/myOrders",{ orders: orders, title:"My Orders"}); 
 		}
+		Blog.find({"postedBy.id": req.user._id}, function(err, blog){
+			if(err){
+				console.log(err);
+				req.flash("error", "Something went wrong");
+				res.redirect("back");
+			}
+			Exchange.find({"postedBy.id": req.user._id}, function(err, exchange){
+				if(err){
+					console.log(err);
+					req.flash("error", "Something went wrong");
+					res.redirect("back");
+				}
+				Order.find({user: req.user}, function(err, orders){
+					if(err){
+						console.log(err);
+						req.flash("error", "Something went wrong");
+						res.redirect("back");
+					}else{
+						var cart;
+						orders.forEach(function(order){
+							cart = new Cart(order.cart);
+							order.items = cart.getItems();
+						});
+					}
+					res.render("Index/myAccount",{ orders: orders, exchange: exchange, blog:blog, wishlist: wishlist, title:"My Orders"});
+				}).sort({"created":-1});
+			}).sort({"created":-1});
+		}).sort({"created":-1});
 	}).sort({"created":-1});
 });
 
@@ -974,6 +1154,8 @@ app.get("/wishlist/add/:id",isLoggedIn, function(req, res){
 		}
 		Wishlist.findOne({bookId:req.params.id}, function(err, wishlist){
 			if(wishlist){
+				req.flash("success", "Already exist in your wishlist");
+				res.redirect("/books/"+req.params.id);
 			}else{
 				wishlist = new Wishlist({
 				user: req.user._id,
@@ -981,26 +1163,12 @@ app.get("/wishlist/add/:id",isLoggedIn, function(req, res){
 			    bookId: req.params.id
 				});
 				wishlist.save();
+				
+				req.flash("success", "Added to wishlist");
+				res.redirect("/books/"+req.params.id);
 			}
 		});
-		
-		req.flash("success", "Added to wishlist");
-		res.redirect("/books/"+req.params.id);
 	});
-});
-
-
-// VIEW YOUR WISHLIST
-app.get("/myWishlist", isLoggedIn, function(req, res){
-	Wishlist.find({user: req.user}, function(err, wishlist){
-		if(err){
-			console.log(err);
-			req.flash("error", "Something went wrong");
-			res.redirect("back");
-		}else{
-			res.render("Index/wishlist",{ wishlist: wishlist, title:"My Wishlist"}); 
-		}
-	}).sort({"created":-1});
 });
 
 
@@ -1013,7 +1181,7 @@ app.get("/wishlist/remove/:id", isLoggedIn, function(req, res){
 			res.redirect("back");
 		}else{
 			req.flash("success", "Removed from Wishlist");
-			res.redirect("/myWishlist");
+			res.redirect("/myAccount");
 		}
 	});
 });
@@ -1028,6 +1196,19 @@ function isLoggedIn(req, res, next){
 	req.session.oldUrl = req.url;
 	req.flash("error", "Please login first !")
 	res.redirect("/login");
+}
+
+function isVerified(req, res, next){
+	try{
+		if(!req.user.isVerified){
+				throw new Error('Please verify your email to login');
+		}
+	}catch(err){
+		req.logout();
+		req.flash("error", err.message);
+		return res.redirect("/login")
+	}
+	next();
 }
 
 // CHECK ADMIN FUNCTION
@@ -1050,6 +1231,30 @@ function isAdmin(req, res, next){
 function isBlogOwner(req, res, next){
 	if(req.isAuthenticated()){
 		Blog.findById(req.params.id, function(err, found){
+			if(err){
+				console.log(err);
+				req.flash("error", err.message);
+				res.redirect("back");
+			}else{
+				if(found.postedBy.id.equals(req.user._id)){
+					   next();
+				}else{
+					req.flash("error", "Permission denied");
+					res.redirect("back");
+				}
+			}
+		});
+	}else{
+		req.session.oldUrl = req.url;
+		req.flash("error", "Please login first !")
+		res.redirect("/login");
+	}
+}
+
+// CHECK EXCHANGE OWNER FUNCTION
+function isExchangeOwner(req, res, next){
+	if(req.isAuthenticated()){
+		Exchange.findById(req.params.id, function(err, found){
 			if(err){
 				console.log(err);
 				req.flash("error", err.message);

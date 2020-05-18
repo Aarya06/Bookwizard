@@ -1,0 +1,35 @@
+<%- include("../partials/top") %>
+<body>
+	<%- include("../partials/header") %>
+	
+	<div class="container" id="order">
+		<ul class="nav nav-tabs mb-4">
+			<li class="nav-item">
+				<a class="nav-link active text-dark" data-toggle="tab" href="#wishlist">My Wishlist</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-dark" data-toggle="tab" href="#orders">My Orders</a>
+			</li>
+			<li class="nav-item" >
+				<a class="nav-link text-dark"  data-toggle="tab" href="#blog">My Blog Posts</a>
+			<li class="nav-item" >
+				<a class="nav-link text-dark"  data-toggle="tab" href="#exchange">My Exchange Posts</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane fade show active" id="wishlist" >
+				<%- include("./wishlist") %>
+			</div>
+			<div class="tab-pane fade" id="orders" >
+				<%- include("./myOrders") %>
+			</div>
+			<div class="tab-pane fade" id="blog" >
+				<%- include("./myBlogs") %>
+			</div>
+			<div class="tab-pane fade" id="exchange" >
+				<%- include("./myExchange") %>
+			</div>
+		</div>
+	</div>
+	
+	<%- include("../partials/footer") %>

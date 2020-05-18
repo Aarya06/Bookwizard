@@ -96,6 +96,14 @@ body {
 	background-repeat: no-repeat
 }
 
+.jumbotronExchange {
+	width:100%;
+	height:auto;
+	background-image:url(/images/exchangeJumbo.jpg); 
+	background-size: cover;
+	background-repeat: no-repeat
+}
+
 /* ========================================== BLOG/EVENT ======================================= */
 
 
@@ -231,4 +239,10 @@ li.timeline-item::before {
 .btn-google {
 	color: white;
 	background-color: #ea4335;
+}
+.btn-link {
+	color: #323232;
+}
+.btn-link:hover {
+	color: #000000;
 }

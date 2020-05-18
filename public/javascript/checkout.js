@@ -21,7 +21,6 @@ function stripeResponseHandler(status, response) {
   if (response.error) { // Problem!
 
     // Show the errors on the form
-	// window.location = "/checkout";
     $("#payment-error").text(response.error.message);
 	$("#payment-error").removeClass("d-none");
     $form.find('button').prop('disabled', false); // Re-enable submission
