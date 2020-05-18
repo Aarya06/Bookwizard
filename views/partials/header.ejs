@@ -13,30 +13,30 @@
 				<li class="nav-item ">
 					<a class="nav-link text-dark" href="/">Home</a>
 				</li>
-				<li class="nav-item mx-4">
+				<li class="nav-item mx-md-3 mx-lg-4">
 					<a class="nav-link text-dark" href="/books">Books</a>
 				</li>
-				<li class="nav-item mx-4">
+				<li class="nav-item mx-md-3 mx-lg-4">
 					<a class="nav-link text-dark" href="/ebooks">E-Books</a>
 				</li>
-				<li class="nav-item mx-4">
+				<li class="nav-item mx-md-3 mx-lg-4">
 					<a class="nav-link text-dark" href="/blogs">Blog</a>
 				</li>
-				<li class="nav-item mx-4">
+				<li class="nav-item mx-md-3 mx-lg-4">
 					<a class="nav-link text-dark" href="/exchange">Exchange</a>
 				</li>
-				<li class="nav-item mx-4">
+				<li class="nav-item mx-md-3 mx-lg-4">
 					<a class="nav-link text-dark" href="/events">Events</a>
 				</li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<% if(!currentUser){ %>
-				<li class="nav-item mx-3">
+				<li class="nav-item mx-md-2 mx-lg-3">
 					<a class="nav-link text-dark" href="/login">
 						<i class="fas fa-sign-in-alt"></i> Login</a>
 				</li>
 				<% }else{ %>
-				<li class="nav-item mx-3 dropdown">
+				<li class="nav-item mx-md-2 mx-lg-3 dropdown">
 					<a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="/">
 						<i class="fas fa-user"></i> <%=currentUser.firstname%>
 					</a>
@@ -55,7 +55,7 @@
 				</li>
 				<%	} %>
 				
-				<li class="nav-item mx-3">
+				<li class="nav-item mx-md-2 mx-lg-3">
 					<a class="nav-link text-dark" href="/cart">
 						<i class="fas fa-shopping-cart"></i> Cart (
 						<% if(session.cart){ %>

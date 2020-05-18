@@ -758,7 +758,7 @@ app.post("/exchange", isLoggedIn, function(req, res){
 });
 
 // VIEW EXCHANGE DETAILS
-app.get("/exchange/:id", function(req,res){
+app.get("/exchange/:id",isLoggedIn, function(req,res){
 	Exchange.findById(req.params.id, function(err, found){
 		if(err){
 			console.log(err);
