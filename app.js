@@ -201,14 +201,17 @@ app.get("/books/:id", function(req, res){
 		}else{
 			var wish = false;
 			if(req.isAuthenticated()){
-				Wishlist.findOne({bookId:req.params.id, user:req.user._id}, function(err, wishlist){
-					if(wishlist){
-						wish = true;
-					}
-				});
+	        Wishlist.findOne({bookId:req.params.id, user:req.user._id}, function(err, wishlist){
+				if(wishlist){
+					wish = true;
+					
+				}
+				res.render("Book/showBook",{book: found, wish:wish, title:"Books" });
+			});
+			}else{
+				res.render("Book/showBook",{book: found, wish:wish, title:"Books" });
 			}
 			
-			res.render("Book/showBook",{book: found, wish:wish, title:"Books" });
 			
 		}
 	});
