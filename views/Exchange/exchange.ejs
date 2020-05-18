@@ -8,9 +8,9 @@
 		<div class="jumbotron p-4 p-md-5 text-white rounded bg-dark jumbotronExchange">
 			<center>
 			<div class="col-lg-8 col-sm-12 px-0">
-				<h1 class="display-4 font-italic">Exchange portal</h1>
+				<h1 class="display-4 font-italic">Connecting people with books</h1>
 				<p class="lead my-3">
-					We provide a platform to connect with people by exchanging books.
+					We provide a platform to meet and exchange books with other readers.
 				</p>
 				<a href = "/exchange/new" class="btn btn-info btn-lg">Post an exchange</a>
 			</div>
@@ -27,7 +27,7 @@
 		<% if(exchange && exchange.length > 0){ %>
 		<div class="row">
 			<% exchange.forEach(function(exchange){ %>
-			<div class="col-lg-6 d-flex justify-content-center">
+			<div class="col-md-6 d-flex justify-content-center">
 				<div class="card mb-3 border-0" style="max-width: 400px;">
 					<div class="row d-flex justify-content-center ">
 						<div class="col-md-4 px-0">
@@ -49,7 +49,7 @@
 						<div class="col-md-4 px-0">
 							<img src="<%=exchange.b2_Image%>" class="card-img" alt="...">
 							<h6 class="mb-0"><%=exchange.b2_Title%></h6>
-							<p class="text-muted my-0"><%=exchange.b1_Author%></p>
+							<p class="text-muted my-0"><%=exchange.b2_Author%></p>
 						</div>
 					</div>
 				</div>

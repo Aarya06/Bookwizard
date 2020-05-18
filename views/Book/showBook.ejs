@@ -34,8 +34,18 @@
 						<hr>
 						<a href="/cart/add/<%=book._id%>" 
 						   class="btn btn-lg btn-outline-primary text-uppercase mt-5">Add to cart <i class="fas fa-cart-plus"></i></a>
-						<a href="/wishlist/add/<%=book._id%>" 
-						   class="btn btn-outline-danger btn-lg mt-5"><i class="fas fa-heart"></i></a>
+						
+						
+							<% if(wish){ %>
+								<a href="/wishlist/add/<%=book._id%>" 
+						   class="btn btn-outline-danger btn-lg active mt-5">
+									<i class="fas fa-heart"></i></a>
+							<% }else{ %>
+								<a href="/wishlist/add/<%=book._id%>" 
+						   class="btn btn-outline-danger btn-lg mt-5">
+									<i class="fas fa-heart"></i></a>
+							<% } %>
+						
 					</div>
 					<div class="pl-3 mt-4">
 						<h3 class="border-bottom"> Product Specification</h3>

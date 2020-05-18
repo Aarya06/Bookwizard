@@ -199,7 +199,15 @@ app.get("/books/:id", function(req, res){
 			req.flash("error", "Something went wrong");
 			res.redirect("back");
 		}else{
-			res.render("Book/showBook",{book: found, title:"Books"});
+			var wish = false;
+			Wishlist.findOne({bookId:req.params.id, user:req.user._id}, function(err, wishlist){
+				if(wishlist){
+					wish = true;
+					
+				}
+				res.render("Book/showBook",{book: found, wish:wish, title:"Books" });
+			});
+			
 		}
 	});
 	
@@ -1152,7 +1160,7 @@ app.get("/wishlist/add/:id",isLoggedIn, function(req, res){
 			req.flash("error", "Something went wrong");
 			return res.redirect("back");
 		}
-		Wishlist.findOne({bookId:req.params.id}, function(err, wishlist){
+		Wishlist.findOne({bookId:req.params.id, user:req.user._id}, function(err, wishlist){
 			if(wishlist){
 				req.flash("success", "Already exist in your wishlist");
 				res.redirect("/books/"+req.params.id);
@@ -1160,7 +1168,7 @@ app.get("/wishlist/add/:id",isLoggedIn, function(req, res){
 				wishlist = new Wishlist({
 				user: req.user._id,
 				items: book,
-			    bookId: req.params.id
+				bookId: req.params.id
 				});
 				wishlist.save();
 				
