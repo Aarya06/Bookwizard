@@ -200,13 +200,15 @@ app.get("/books/:id", function(req, res){
 			res.redirect("back");
 		}else{
 			var wish = false;
-			Wishlist.findOne({bookId:req.params.id, user:req.user._id}, function(err, wishlist){
-				if(wishlist){
-					wish = true;
-					
-				}
-				res.render("Book/showBook",{book: found, wish:wish, title:"Books" });
-			});
+			if(req.isAuthenticated()){
+				Wishlist.findOne({bookId:req.params.id, user:req.user._id}, function(err, wishlist){
+					if(wishlist){
+						wish = true;
+					}
+				});
+			}
+			
+			res.render("Book/showBook",{book: found, wish:wish, title:"Books" });
 			
 		}
 	});
