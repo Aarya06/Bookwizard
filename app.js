@@ -9,7 +9,6 @@ var expressSanitizer = require("express-sanitizer");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
 var nodemailer = require("nodemailer");
-var requestIp = require('request-ip');
 var methodOverride = require("method-override");
 var mongoStore = require("connect-mongo")(expressSession);
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -592,12 +591,6 @@ app.get("/blogs/:id", function(req, res){
 			req.flash("error", "Something went wrong");
 			res.redirect("back")
 		}else{
-			var clientIp = requestIp.getClientIp(req);
-			if(!revisted(foundBLog, clientIp)){
-				foundBLog.views = foundBLog.views+1;
-				foundBLog.save;
-				console.log(clientIp);
-			}
 			res.render("Blog/showBlog", {blog: foundBLog, title:"Blogs"});
 		}
 	});
@@ -1316,16 +1309,6 @@ function checkCommentOwner(req, res, next){
 		req.flash("error", "Please login first");
 		res.redirect("back");
 	}
-}
-
-function revisted(blog, clientIp){
-	blog.visitors.forEach(function(user){
-		if(user == clientIp){
-			return true;
-		}else{
-			return false;
-		}
-	})
 }
 
 
