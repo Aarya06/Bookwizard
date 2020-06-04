@@ -12,6 +12,8 @@ var blogSchema = new mongoose.Schema({
 		},
 		name: String
 	},
+	views: {type: Number, default: 0},
+	visitors:[{type: String, default: null}],
 	created: {type: Date, default: Date.now},
 	comments: [
 	{
